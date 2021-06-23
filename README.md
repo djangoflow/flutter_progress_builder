@@ -5,11 +5,11 @@ A simple wrapper for asynchronous actions with progress/loading indications and 
 ## Usage
 
 The following will:
-    - await the Future.delayed()
-    - show `LinearProgressIndicator` while it is being awaited
-    - print 'success' if successful
-    - print error: ...exception... in case of an exception
-    - print 'done' in all cases
+* await the Future.delayed()
+* show `LinearProgressIndicator` while it is being awaited
+* print 'success' if successful
+* print error: ...exception... in case of an exception
+* print 'done' in all cases
 
 ```
 import 'package:progress_builder/progress_builder.dart';
@@ -31,6 +31,9 @@ import 'package:progress_builder/progress_builder.dart';
                 ),
 
 ```
+
+## TODO
+[] Add documentation on how to use the actual progress value callback
 
 ## Features and bugs
 
