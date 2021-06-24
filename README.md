@@ -2,38 +2,48 @@
 
 A simple wrapper for asynchronous actions with progress/loading indications and error handling.
 
+See a demo at: https://progress-builder.flutter.apexlabs.ai
+
 ## Usage
 
 The following will:
 * await the Future.delayed()
 * show `LinearProgressIndicator` while it is being awaited
 * print 'success' if successful
-* print error: ...exception... in case of an exception
+* print error: ...exception... at random in case of an exception
 * print 'done' in all cases
 
 ```
 import 'package:progress_builder/progress_builder.dart';
 
 ...
-                LinearProgressBuilder(
-                  builder: (action, _) => ElevatedButton(
-                    onPressed: action,
-                    child: Text('PRESS ME'),
-                  ),
-                  action: () async {
-                    print('loading');
-                    await Future.delayed(const Duration(seconds: 2));
-                    print('loaded');
-                  },
-                  onDone: () => print('done'),
-                  onError: (error) => print('error $error'),
-                  onSuccess: () => print('success'),
+              LinearProgressBuilder(
+                builder: (action) => ElevatedButton(
+                  onPressed: action,
+                  child: Text('PRESS ME'),
                 ),
+                action: (onProgress) async {
+                  _showMessage('loading undetermined');
+                  await Future.delayed(const Duration(seconds: 1));
+                  for (final progress in [10, 20, 30, 40, 50, 60, 70, 80, 90]) {
+                    _showMessage('loaded $progress%');
+                    onProgress(100, progress);
+                    await Future.delayed(const Duration(milliseconds: 500));
+                  }
+                  if (_random.nextBool()) {
+                    throw Exception('Loading failed');
+                  }
+                  _showMessage('loaded');
+                },
+                onDone: () => _showMessage('done'),
+                onError: (error) => _showSnackbar('error $error'),
+                onSuccess: () => _showSnackbar('success'),
+              ),
 
 ```
 
 ## TODO
-[] Add documentation on how to use the actual progress value callback
+[X] Add documentation on how to use the actual progress value callback
 
 ## Features and bugs
 
