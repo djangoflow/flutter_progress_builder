@@ -48,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           LinearProgressBuilder(
-            builder: (action, error) => Column(
+            builder: (context, action, error) => Column(
               children: [
                 ElevatedButton(
                   onPressed: action,
