@@ -1,6 +1,6 @@
 name: progress_builder
 description: A simple wrapper for asynchronous actions with progress/loading indicators and error handling.
-version: 1.0.3
+version: 1.0.4
 homepage: https://github.com/apexlabs-ai/progress_builder
 
 environment:
