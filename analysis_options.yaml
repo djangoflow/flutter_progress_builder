@@ -109,8 +109,6 @@ linter:
     - prefer_typing_uninitialized_variables
     - provide_deprecation_message
     - recursive_getters
-    # TODO(ajil): once the rule is in stable uncomment and reformat the entire code in one commit
-    #    - require_trailing_comma
     - slash_for_doc_comments
     - sort_unnamed_constructors_first
     - test_types_in_equals

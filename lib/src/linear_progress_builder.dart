@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'progress_builder.dart';
 
 class LinearProgressBuilder extends ProgressBuilder {
-  static Widget _progressBuilder([double? value]) =>
+  static Widget _progressBuilder([context, double? value]) =>
       LinearProgressIndicator(value: value);
 
   LinearProgressBuilder(
-      {required Widget Function(void Function()?, Object?) builder,
+      {required ProgressChildWidgetBuilder builder,
       void Function(Object)? onError,
       void Function()? onSuccess,
       void Function()? onDone,

@@ -18,7 +18,7 @@ import 'package:progress_builder/progress_builder.dart';
 
 ...
           LinearProgressBuilder(
-            builder: (action, error) => Column(
+            builder: (context, action, error) => Column(
               children: [
                 ElevatedButton(
                   onPressed: action,

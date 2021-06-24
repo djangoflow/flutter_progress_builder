@@ -1,3 +1,7 @@
+## [1.0.5] - 24 Jun 2021
+
+* Added BuildContext to the builders
+
 ## [1.0.4] - 24 Jun 2021
 
 * Added error parameter to the builder so that you can show errors in-line if desired

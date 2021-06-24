@@ -1,14 +1,40 @@
 import 'package:flutter/material.dart';
 
+///
+/// Builds a widget in the non-progress/loading state
+///
+typedef ProgressChildWidgetBuilder = Widget Function(
+    BuildContext, void Function()?, Object?);
+typedef ProgressIndicatorWidgetBuilder = Widget Function(BuildContext,
+    [double?]);
+
+///
+/// Base ProgressBuilder
+///
+/// ```dart
+/// ProgressBuilder(
+///   builder: (context, state, error) {
+///   // return the widget here (e.g. a button) or an error widget, or both
+///   }
+/// )
+/// ```
 class ProgressBuilder extends StatefulWidget {
-  final Widget Function(void Function()?, Object?) builder;
-  final Widget Function([double?]) progressBuilder;
+  /// Builds both the initial state and once the action is done, both successfully and after an exception.
+  /// dart
+  final ProgressChildWidgetBuilder builder;
+  final ProgressIndicatorWidgetBuilder progressBuilder;
   final void Function(Object)? onError;
   final void Function()? onSuccess;
   final void Function()? onDone;
   final void Function()? onStart;
   final Future<void> Function(void Function(int, int))? action;
 
+  /// Creates a ProgressBuilder.
+  ///
+  /// The [builder]  builds the child, either in initial, done or error state (error != null).
+  ///
+  /// The [progressBuilder] builds the state when action is in progress, e.g. LinearLoadingIndicator
+  ///
   ProgressBuilder({
     required this.builder,
     required this.progressBuilder,
@@ -65,9 +91,10 @@ class _ProgressBuilderState extends State<ProgressBuilder> {
   Widget build(BuildContext context) {
     if (_progress != null) {
       final progress = _progress! < 0 ? null : _progress;
-      return widget.progressBuilder.call(progress);
+      return widget.progressBuilder.call(context, progress);
     } else {
-      return widget.builder(widget.action != null ? _action : null, _error);
+      return widget.builder(
+          context, widget.action != null ? _action : null, _error);
     }
   }
 }
