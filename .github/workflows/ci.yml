@@ -17,10 +17,12 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
-      - run: flutter pub get
-      - run: flutter build web
+      - working-directory: ./example
+        run: |
+          flutter pub get
+          flutter build web
       - name: Deploy to pages🚀
         uses: JamesIves/github-pages-deploy-action@4.1.3
         with:
          branch: gh-pages
-         folder: build/web
+         folder: example/build/web
