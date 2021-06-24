@@ -50,9 +50,21 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           LinearProgressBuilder(
-            builder: (action) => ElevatedButton(
-              onPressed: action,
-              child: Text('PRESS ME'),
+            builder: (action, error) => Column(
+              children: [
+                ElevatedButton(
+                  onPressed: action,
+                  child: Text(
+                    '50/50 chance of success',
+                  ),
+                ),
+                if (error != null)
+                  Container(
+                    color: Colors.red,
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(error.toString()),
+                  )
+              ],
             ),
             action: (onProgress) async {
               _showMessage('loading undetermined');

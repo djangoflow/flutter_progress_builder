@@ -10,8 +10,7 @@ class CircularProgressBuilder extends ProgressBuilder {
       CircularProgressIndicator.adaptive(value: value);
 
   CircularProgressBuilder(
-      {required Widget Function(void Function()?)
-          builder,
+      {required Widget Function(void Function()?, Object?) builder,
       void Function(Object)? onError,
       void Function()? onSuccess,
       void Function()? onDone,
@@ -25,8 +24,7 @@ class CircularProgressBuilder extends ProgressBuilder {
             action: action);
 
   CircularProgressBuilder.adaptive(
-      {required Widget Function(void Function()?)
-          builder,
+      {required Widget Function(void Function()?, Object?) builder,
       void Function(Object)? onError,
       void Function()? onSuccess,
       void Function()? onDone,

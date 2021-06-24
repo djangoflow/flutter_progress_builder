@@ -7,8 +7,7 @@ class LinearProgressBuilder extends ProgressBuilder {
       LinearProgressIndicator(value: value);
 
   LinearProgressBuilder(
-      {required Widget Function(void Function()?)
-          builder,
+      {required Widget Function(void Function()?, Object?) builder,
       void Function(Object)? onError,
       void Function()? onSuccess,
       void Function()? onDone,

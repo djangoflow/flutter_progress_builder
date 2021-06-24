@@ -17,29 +17,40 @@ The following will:
 import 'package:progress_builder/progress_builder.dart';
 
 ...
-              LinearProgressBuilder(
-                builder: (action) => ElevatedButton(
+          LinearProgressBuilder(
+            builder: (action, error) => Column(
+              children: [
+                ElevatedButton(
                   onPressed: action,
-                  child: Text('PRESS ME'),
+                  child: Text(
+                    '50/50 chance of success',
+                  ),
                 ),
-                action: (onProgress) async {
-                  _showMessage('loading undetermined');
-                  await Future.delayed(const Duration(seconds: 1));
-                  for (final progress in [10, 20, 30, 40, 50, 60, 70, 80, 90]) {
-                    _showMessage('loaded $progress%');
-                    onProgress(100, progress);
-                    await Future.delayed(const Duration(milliseconds: 500));
-                  }
-                  if (_random.nextBool()) {
-                    throw Exception('Loading failed');
-                  }
-                  _showMessage('loaded');
-                },
-                onDone: () => _showMessage('done'),
-                onError: (error) => _showSnackbar('error $error'),
-                onSuccess: () => _showSnackbar('success'),
-              ),
-
+                if (error != null)
+                  Container(
+                    color: Colors.red,
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(error.toString()),
+                  )
+              ],
+            ),
+            action: (onProgress) async {
+              _showMessage('loading undetermined');
+              await Future.delayed(const Duration(seconds: 1));
+              for (final progress in [10, 20, 30, 40, 50, 60, 70, 80, 90]) {
+                _showMessage('loaded $progress%');
+                onProgress(100, progress);
+                await Future.delayed(const Duration(milliseconds: 500));
+              }
+              if (_random.nextBool()) {
+                throw Exception('Loading failed');
+              }
+              _showMessage('loaded');
+            },
+            onDone: () => _showMessage('done'),
+            onError: (error) => _showSnackbar('error $error'),
+            onSuccess: () => _showSnackbar('success'),
+          ),
 ```
 
 ## TODO

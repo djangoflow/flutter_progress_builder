@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ProgressBuilder extends StatefulWidget {
-  final Widget Function(void Function()?) builder;
+  final Widget Function(void Function()?, Object?) builder;
   final Widget Function([double?]) progressBuilder;
   final void Function(Object)? onError;
   final void Function()? onSuccess;
@@ -25,6 +25,7 @@ class ProgressBuilder extends StatefulWidget {
 
 class _ProgressBuilderState extends State<ProgressBuilder> {
   double? _progress;
+  dynamic _error;
 
   void _progressCallback(int? count, int? total) {
     setState(() {
@@ -39,12 +40,14 @@ class _ProgressBuilderState extends State<ProgressBuilder> {
   Future<void> _action() async {
     setState(() {
       _progress = -1;
+      _error = null;
     });
     widget.onStart?.call();
     try {
       await widget.action?.call(_progressCallback);
       widget.onSuccess?.call();
     } catch (e) {
+      _error = e;
       if (widget.onError != null) {
         widget.onError!(e);
       } else {
@@ -64,8 +67,7 @@ class _ProgressBuilderState extends State<ProgressBuilder> {
       final progress = _progress! < 0 ? null : _progress;
       return widget.progressBuilder.call(progress);
     } else {
-      return widget.builder(
-          widget.action != null ? _action : null);
+      return widget.builder(widget.action != null ? _action : null, _error);
     }
   }
 }
