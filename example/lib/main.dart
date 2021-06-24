@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:progress_builder/progress_builder.dart';
 import 'package:widget_with_codeview/widget_with_codeview.dart';
@@ -32,7 +30,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _random = Random();
+  bool _fail = true;
   String _message = '';
 
   void _showMessage(String message) {
@@ -67,14 +65,15 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
             action: (onProgress) async {
+              _fail = !_fail;
               _showMessage('loading undetermined');
               await Future.delayed(const Duration(seconds: 1));
               for (final progress in [10, 20, 30, 40, 50, 60, 70, 80, 90]) {
                 _showMessage('loaded $progress%');
                 onProgress(100, progress);
-                await Future.delayed(const Duration(milliseconds: 500));
+                await Future.delayed(const Duration(milliseconds: 200));
               }
-              if (_random.nextBool()) {
+              if (_fail) {
                 throw Exception('Loading failed');
               }
               _showMessage('loaded');

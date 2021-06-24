@@ -8,7 +8,7 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
-  pedantic: any
+  lints: ^1.0.1
   flutter:
     sdk: flutter
 
