@@ -9,13 +9,13 @@ class CircularProgressBuilder extends ProgressBuilder {
   static Widget _adaptiveProgressBuilder(context, [double? value]) =>
       CircularProgressIndicator.adaptive(value: value);
 
-  CircularProgressBuilder(
-      {required ProgressChildWidgetBuilder builder,
-      void Function(Object)? onError,
-      void Function()? onSuccess,
-      void Function()? onDone,
-      Future<void> Function(void Function(int, int))? action})
-      : super(
+  CircularProgressBuilder({
+    required ProgressChildWidgetBuilder builder,
+    void Function(Object)? onError,
+    void Function()? onSuccess,
+    void Function()? onDone,
+    Future<void> Function(OnProgressReceived onProgressReceived)? action,
+  }) : super(
           builder: builder,
           progressBuilder: _progressBuilder,
           onError: onError,

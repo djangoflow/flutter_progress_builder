@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 /// Builds a widget in the non-progress/loading state
 ///
 typedef ProgressChildWidgetBuilder = Widget Function(
-    BuildContext, void Function()?, Object?);
-typedef ProgressIndicatorWidgetBuilder = Widget Function(BuildContext,
-    [double?]);
+    BuildContext context, void Function()? action, Object? error);
+typedef ProgressIndicatorWidgetBuilder = Widget Function(BuildContext context,
+    [double? progress]);
+
+typedef OnProgressReceived = void Function(int received, int total);
 
 ///
 /// Base ProgressBuilder
@@ -23,11 +25,13 @@ class ProgressBuilder extends StatefulWidget {
   /// dart
   final ProgressChildWidgetBuilder builder;
   final ProgressIndicatorWidgetBuilder progressBuilder;
-  final void Function(Object)? onError;
+
+  final void Function(Object error)? onError;
   final void Function()? onSuccess;
   final void Function()? onDone;
   final void Function()? onStart;
-  final Future<void> Function(void Function(int, int))? action;
+
+  final Future<void> Function(OnProgressReceived onProgressReceived)? action;
 
   /// Creates a ProgressBuilder.
   ///
