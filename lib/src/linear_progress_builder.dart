@@ -6,17 +6,20 @@ class LinearProgressBuilder extends ProgressBuilder {
   static Widget _progressBuilder([context, double? value]) =>
       LinearProgressIndicator(value: value);
 
-  LinearProgressBuilder(
-      {required ProgressChildWidgetBuilder builder,
-      void Function(Object)? onError,
-      void Function()? onSuccess,
-      void Function()? onDone,
-      Future<void> Function(void Function(int, int))? action})
-      : super(
-            builder: builder,
-            progressBuilder: _progressBuilder,
-            onError: onError,
-            onSuccess: onSuccess,
-            onDone: onDone,
-            action: action);
+  LinearProgressBuilder({
+    required ProgressChildWidgetBuilder builder,
+    ErrorCallback? onError,
+    ProgressAction? action,
+    VoidCallback? onDone,
+    VoidCallback? onStart,
+    VoidCallback? onSuccess,
+  }) : super(
+          action: action,
+          builder: builder,
+          onDone: onDone,
+          onError: onError,
+          onStart: onStart,
+          onSuccess: onSuccess,
+          progressBuilder: _progressBuilder,
+        );
 }

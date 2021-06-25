@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
               await Future.delayed(const Duration(seconds: 1));
               for (final progress in [10, 20, 30, 40, 50, 60, 70, 80, 90]) {
                 _showMessage('loaded $progress%');
-                onProgress(100, progress);
+                onProgress(progress / 100);
                 await Future.delayed(const Duration(milliseconds: 200));
               }
               if (_fail) {

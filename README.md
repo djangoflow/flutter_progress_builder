@@ -1,12 +1,41 @@
 # Progress Builder
 
-A simple wrapper for asynchronous actions with progress/loading indications and error handling.
+A short-hand builder for performing simple asynchronous actions with progress/loading indications and built-in error
+handling.
 
-See a demo at: https://progress-builder.flutter.apexlabs.ai
+Demo at: https://progress-builder.flutter.apexlabs.ai
+
+You can think of this widget as a short-hand for:
+
+```
+SomeButton(
+    ...
+    onPressed: () async {
+        onStart...
+        showLoading...
+
+        try {
+            await doAction... showProgress... 10...20...30...
+            showLoaded...
+            onSuccess...
+
+        } catch(e) {
+            onError...
+        } finally {
+            onDone...
+        }
+    }
+    ...
+```
+
+Anything more complex than that, you probably should be using a `Cubit` or `Bloc`
+
+
 
 ## Usage
 
 The following will:
+
 * await the Future.delayed()
 * show `LinearProgressIndicator` while it is being awaited
 * print 'success' if successful
@@ -35,14 +64,15 @@ import 'package:progress_builder/progress_builder.dart';
               ],
             ),
             action: (onProgress) async {
+              _fail = !_fail;
               _showMessage('loading undetermined');
               await Future.delayed(const Duration(seconds: 1));
               for (final progress in [10, 20, 30, 40, 50, 60, 70, 80, 90]) {
                 _showMessage('loaded $progress%');
-                onProgress(100, progress);
-                await Future.delayed(const Duration(milliseconds: 500));
+                onProgress(progress / 100);
+                await Future.delayed(const Duration(milliseconds: 200));
               }
-              if (_random.nextBool()) {
+              if (_fail) {
                 throw Exception('Loading failed');
               }
               _showMessage('loaded');
@@ -54,6 +84,7 @@ import 'package:progress_builder/progress_builder.dart';
 ```
 
 ## TODO
+
 [X] Add documentation on how to use the actual progress value callback
 
 ## Features and bugs

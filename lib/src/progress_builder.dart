@@ -4,9 +4,18 @@ import 'package:flutter/material.dart';
 /// Builds a widget in the non-progress/loading state
 ///
 typedef ProgressChildWidgetBuilder = Widget Function(
-    BuildContext, void Function()?, Object?);
-typedef ProgressIndicatorWidgetBuilder = Widget Function(BuildContext,
-    [double?]);
+    BuildContext context, void Function()? action, Object? error);
+
+/// Builds a progress indicator with [double progress]
+typedef ProgressIndicatorWidgetBuilder = Widget Function(BuildContext context,
+    [double? progress]);
+
+/// The call back from action to notify about the progress
+typedef ProgressCallback = void Function(double? progress);
+
+typedef ProgressAction = Future<void> Function(ProgressCallback);
+
+typedef ErrorCallback = void Function(Object error);
 
 ///
 /// Base ProgressBuilder
@@ -23,11 +32,21 @@ class ProgressBuilder extends StatefulWidget {
   /// dart
   final ProgressChildWidgetBuilder builder;
   final ProgressIndicatorWidgetBuilder progressBuilder;
-  final void Function(Object)? onError;
-  final void Function()? onSuccess;
-  final void Function()? onDone;
-  final void Function()? onStart;
-  final Future<void> Function(void Function(int, int))? action;
+
+  /// Called if exception is thrown
+  final ErrorCallback? onError;
+
+  /// Called when done and no exception was thrown
+  final VoidCallback? onSuccess;
+
+  /// Always called (i.e. finally...)
+  final VoidCallback? onDone;
+
+  /// Called when loading/progress indicator is displayed before the action
+  final VoidCallback? onStart;
+
+  /// The action to be executed
+  final ProgressAction? action;
 
   /// Creates a ProgressBuilder.
   ///
@@ -53,13 +72,9 @@ class _ProgressBuilderState extends State<ProgressBuilder> {
   double? _progress;
   dynamic _error;
 
-  void _progressCallback(int? count, int? total) {
+  void _progressCallback(double? progress) {
     setState(() {
-      if (count != null && total != null) {
-        _progress = total / count;
-      } else {
-        _progress = -1;
-      }
+      _progress = progress ?? -1;
     });
   }
 
