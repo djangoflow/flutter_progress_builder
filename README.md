@@ -83,6 +83,31 @@ import 'package:progress_builder/progress_builder.dart';
           ),
 ```
 
+### Usage with reactive_forms
+
+This packages comes very handy together with https://pub.dev/packages/reactive_forms
+
+You can wrap your submit button with, for example, below:
+
+```
+LinearProgressBuilder(
+  action: (_) async {
+    // your action
+  },
+  onError: (e) {
+   // handle your exceptions here
+  },
+  onSuccess: () {
+    // do something
+  },
+  builder: (context, action, error) =>
+      ElevatedButton(
+        onPressed: (ReactiveForm.of(context)?.valid ?? false) ? action : null,
+        child: const Text('...your action text'),
+      ),
+);
+```
+
 ## TODO
 
 [X] Add documentation on how to use the actual progress value callback

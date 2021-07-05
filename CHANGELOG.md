@@ -1,3 +1,6 @@
+## [1.0.7] - 5 Jul 2021
+* Added documentation on how to use it with reactive_forms
+
 ## [1.0.6] - 25 Jun 2021
 
 * Added named parameters & typedefs - thanks to @ajilo297
