@@ -1,3 +1,6 @@
+## [1.1.0] - 19 Jul 2021
+* Added ActionController to trigger action from parent
+
 ## [1.0.7] - 5 Jul 2021
 * Added documentation on how to use it with reactive_forms
 

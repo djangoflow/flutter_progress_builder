@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 ///
@@ -16,6 +18,11 @@ typedef ProgressCallback = void Function(double? progress);
 typedef ProgressAction = Future<void> Function(ProgressCallback);
 
 typedef ErrorCallback = void Function(Object error);
+
+/// At the moment only start, but may add cancel in the future
+enum ActionType { start }
+
+typedef ActionController = StreamController<ActionType>;
 
 ///
 /// Base ProgressBuilder
@@ -48,21 +55,26 @@ class ProgressBuilder extends StatefulWidget {
   /// The action to be executed
   final ProgressAction? action;
 
+  /// The stream to listen for triggering action externally
+  final ActionController? controller;
+
   /// Creates a ProgressBuilder.
   ///
   /// The [builder]  builds the child, either in initial, done or error state (error != null).
   ///
   /// The [progressBuilder] builds the state when action is in progress, e.g. LinearLoadingIndicator
   ///
-  ProgressBuilder({
+  const ProgressBuilder({
     required this.builder,
     required this.progressBuilder,
     this.action,
+    this.controller,
     this.onError,
     this.onSuccess,
     this.onDone,
     this.onStart,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   _ProgressBuilderState createState() => _ProgressBuilderState();
@@ -71,6 +83,24 @@ class ProgressBuilder extends StatefulWidget {
 class _ProgressBuilderState extends State<ProgressBuilder> {
   double? _progress;
   dynamic _error;
+
+  StreamSubscription<ActionType>? _subscription;
+
+  @override
+  void initState() {
+    _subscription = widget.controller?.stream.listen((event) {
+      if (event == ActionType.start && mounted && _progress == null) {
+        _action();
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
 
   void _progressCallback(double? progress) {
     setState(() {

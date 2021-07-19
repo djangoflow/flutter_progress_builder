@@ -6,13 +6,15 @@ class LinearProgressBuilder extends ProgressBuilder {
   static Widget _progressBuilder([context, double? value]) =>
       LinearProgressIndicator(value: value);
 
-  LinearProgressBuilder({
+  const LinearProgressBuilder({
     required ProgressChildWidgetBuilder builder,
     ErrorCallback? onError,
     ProgressAction? action,
     VoidCallback? onDone,
     VoidCallback? onStart,
     VoidCallback? onSuccess,
+    ActionController? controller,
+    Key? key,
   }) : super(
           action: action,
           builder: builder,
@@ -21,5 +23,7 @@ class LinearProgressBuilder extends ProgressBuilder {
           onStart: onStart,
           onSuccess: onSuccess,
           progressBuilder: _progressBuilder,
+          controller: controller,
+          key: key,
         );
 }

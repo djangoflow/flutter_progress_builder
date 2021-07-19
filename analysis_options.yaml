@@ -1,11 +1,11 @@
-include: package:lints/recommended.yaml
+include: package:flutter_lints/flutter.yaml
 
 analyzer:
   exclude:
     - '**/*.g.dart'
     - '**/*.gr.dart'
     - 'lib/generated/**'
-    - 'modules/**'
+    - 'packages/**'
   strong-mode:
     implicit-casts: true
     implicit-dynamic: true
@@ -110,11 +110,13 @@ linter:
     - provide_deprecation_message
     - recursive_getters
     - slash_for_doc_comments
+    - sort_child_properties_last
     - sort_unnamed_constructors_first
     - test_types_in_equals
     - throw_in_finally
     - type_annotate_public_apis
     - type_init_formals
+    - unawaited_futures
     - unnecessary_await_in_return
     - unnecessary_brace_in_string_interps
     - unnecessary_getters_setters
@@ -127,8 +129,8 @@ linter:
     - unnecessary_statements
     - unnecessary_this
     - unrelated_type_equality_checks
+    - unsafe_html
     - use_full_hex_values_for_flutter_colors
-    - use_function_type_syntax_for_parameters
     - use_rethrow_when_possible
     - use_setters_to_change_properties
     - use_string_buffers

@@ -85,7 +85,7 @@ import 'package:progress_builder/progress_builder.dart';
 
 ### Usage with reactive_forms
 
-This packages comes very handy together with https://pub.dev/packages/reactive_forms
+This package comes very handy together with https://pub.dev/packages/reactive_forms
 
 You can wrap your submit button with, for example, below:
 
@@ -107,6 +107,9 @@ LinearProgressBuilder(
       ),
 );
 ```
+
+You can also trigger the action from the outside, by providing `ActionController controller` to
+the constructor and adding a `ActionType.start` event to the stream.
 
 ## TODO
 
