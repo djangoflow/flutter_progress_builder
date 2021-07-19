@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'action_controller.dart';
 import 'progress_builder.dart';
 
 class LinearProgressBuilder extends ProgressBuilder {

@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:progress_builder/progress_builder.dart';
+import 'action_controller.dart';
 
 ///
 /// Builds a widget in the non-progress/loading state
@@ -18,11 +20,6 @@ typedef ProgressCallback = void Function(double? progress);
 typedef ProgressAction = Future<void> Function(ProgressCallback);
 
 typedef ErrorCallback = void Function(Object error);
-
-/// At the moment only start, but may add cancel in the future
-enum ActionType { start }
-
-typedef ActionController = StreamController<ActionType>;
 
 ///
 /// Base ProgressBuilder
@@ -88,7 +85,9 @@ class _ProgressBuilderState extends State<ProgressBuilder> {
 
   @override
   void initState() {
-    _subscription = widget.controller?.stream.listen((event) {
+    _subscription = (widget.controller ?? DefaultActionController.of(context))
+        ?.stream
+        .listen((event) {
       if (event == ActionType.start && mounted && _progress == null) {
         _action();
       }

@@ -34,7 +34,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool _fail = true;
   String _message = '';
-  late ActionController _controller;
 
   void _showMessage(String message) {
     setState(() {
@@ -46,63 +45,57 @@ class _MyHomePageState extends State<MyHomePage> {
       .showSnackBar(SnackBar(content: Text(message)));
 
   @override
-  void initState() {
-    _controller = ActionController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _controller.close();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          LinearProgressBuilder(
-            builder: (context, action, error) => Column(
-              children: [
-                ElevatedButton(
-                  onPressed: action,
-                  child: const Text(
-                    '50/50 chance of success',
+  Widget build(BuildContext context) => DefaultActionController(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            LinearProgressBuilder(
+              builder: (context, action, error) => Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: action,
+                    child: const Text(
+                      '50/50 chance of success',
+                    ),
                   ),
-                ),
-                if (error != null)
-                  Container(
-                    color: Colors.red,
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(error.toString()),
-                  )
-              ],
+                  if (error != null)
+                    Container(
+                      color: Colors.red,
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(error.toString()),
+                    )
+                ],
+              ),
+              action: (onProgress) async {
+                _fail = !_fail;
+                _showMessage('loading undetermined');
+                await Future.delayed(const Duration(seconds: 1));
+                for (final progress in [10, 20, 30, 40, 50, 60, 70, 80, 90]) {
+                  _showMessage('loaded $progress%');
+                  onProgress(progress / 100);
+                  await Future.delayed(const Duration(milliseconds: 200));
+                }
+                if (_fail) {
+                  throw Exception('Loading failed');
+                }
+                _showMessage('loaded');
+              },
+              onDone: () => _showMessage('done'),
+              onError: (error) => _showSnackbar('error $error'),
+              onSuccess: () => _showSnackbar('success'),
             ),
-            action: (onProgress) async {
-              _fail = !_fail;
-              _showMessage('loading undetermined');
-              await Future.delayed(const Duration(seconds: 1));
-              for (final progress in [10, 20, 30, 40, 50, 60, 70, 80, 90]) {
-                _showMessage('loaded $progress%');
-                onProgress(progress / 100);
-                await Future.delayed(const Duration(milliseconds: 200));
-              }
-              if (_fail) {
-                throw Exception('Loading failed');
-              }
-              _showMessage('loaded');
-            },
-            onDone: () => _showMessage('done'),
-            onError: (error) => _showSnackbar('error $error'),
-            onSuccess: () => _showSnackbar('success'),
-            controller: _controller
-          ),
-          Text(_message),
-          ElevatedButton(
-              onPressed: () => _controller.add(ActionType.start),
-              child: const Text('Trigger action via controller'))
-        ],
-        // This trailing comma makes auto-formatting nicer for build methods.
+            Text(_message),
+            // We need this to have the DefaultActionController in the context
+            Builder(
+              builder: (context) => ElevatedButton(
+                onPressed: () =>
+                    DefaultActionController.of(context)?.add(ActionType.start),
+                child: const Text('Trigger action via controller'),
+              ),
+            )
+          ],
+          // This trailing comma makes auto-formatting nicer for build methods.
+        ),
       );
 }

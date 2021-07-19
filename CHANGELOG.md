@@ -1,3 +1,6 @@
+## [1.1.1] - 19 Jul 2021
+* Added convenience classes ActionControllerMixin and DefaultActionController
+
 ## [1.1.0] - 19 Jul 2021
 * Added ActionController to trigger action from parent
 
