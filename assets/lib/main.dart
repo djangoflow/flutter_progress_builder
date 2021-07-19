@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:progress_builder/progress_builder.dart';
 import 'package:widget_with_codeview/widget_with_codeview.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => MaterialApp(
         title: 'Progress Builder Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: Scaffold(
+        home: const Scaffold(
           body: WidgetWithCodeView(
             sourceFilePath: 'lib/main.dart',
             codeLinkPrefix:
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -32,6 +34,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool _fail = true;
   String _message = '';
+  late ActionController _controller;
 
   void _showMessage(String message) {
     setState(() {
@@ -43,6 +46,18 @@ class _MyHomePageState extends State<MyHomePage> {
       .showSnackBar(SnackBar(content: Text(message)));
 
   @override
+  void initState() {
+    _controller = ActionController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -52,14 +67,14 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                   onPressed: action,
-                  child: Text(
+                  child: const Text(
                     '50/50 chance of success',
                   ),
                 ),
                 if (error != null)
                   Container(
                     color: Colors.red,
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(error.toString()),
                   )
               ],
@@ -81,8 +96,12 @@ class _MyHomePageState extends State<MyHomePage> {
             onDone: () => _showMessage('done'),
             onError: (error) => _showSnackbar('error $error'),
             onSuccess: () => _showSnackbar('success'),
+            controller: _controller
           ),
-          Text(_message)
+          Text(_message),
+          ElevatedButton(
+              onPressed: () => _controller.add(ActionType.start),
+              child: const Text('Trigger action via controller'))
         ],
         // This trailing comma makes auto-formatting nicer for build methods.
       );
