@@ -3,13 +3,18 @@ import 'package:flutter/material.dart';
 import 'action_controller.dart';
 
 class DefaultActionController extends StatefulWidget {
+
   const DefaultActionController({
     required this.child,
+    this.broadcast = true,
     Key? key,
   }) : super(key: key);
 
   /// The widget below this widget in the tree.
   final Widget child;
+
+  /// Create a broadcast stream
+  final bool broadcast;
 
   static ActionController? of(BuildContext context) => context
       .findAncestorStateOfType<_DefaultActionControllerState>()
@@ -26,7 +31,7 @@ class _DefaultActionControllerState extends State<DefaultActionController> {
   @override
   void initState() {
     super.initState();
-    _controller = ActionController();
+    _controller = widget.broadcast ? ActionController.broadcast() : ActionController();
   }
 
   @override

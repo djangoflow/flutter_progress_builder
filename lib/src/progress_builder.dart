@@ -70,6 +70,7 @@ class ProgressBuilder extends StatefulWidget {
     this.onSuccess,
     this.onDone,
     this.onStart,
+
     Key? key,
   }) : super(key: key);
 

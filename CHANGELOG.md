@@ -1,3 +1,6 @@
+## [1.1.2] - 22 Jul 2021
+* Make ActionController streams broadcast by default to allow for widgets lifecycle
+
 ## [1.1.1] - 19 Jul 2021
 * Added convenience classes ActionControllerMixin and DefaultActionController
 
