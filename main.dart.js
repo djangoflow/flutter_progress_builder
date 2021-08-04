@@ -58769,7 +58769,7 @@ s=4
 break
 case 2:o=[1]
 case 4:q=1
-n.ah(new D.a4q(n))
+if(n.c!=null)n.ah(new D.a4q(n))
 n.a.r.$0()
 s=o.pop()
 break
