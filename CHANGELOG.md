@@ -1,3 +1,6 @@
+## [1.1.3] - 4 Aug 2021
+* Properly handle the race condition when the widget is disposed while performing the action
+
 ## [1.1.2] - 22 Jul 2021
 * Make ActionController streams broadcast by default to allow for widgets lifecycle
 

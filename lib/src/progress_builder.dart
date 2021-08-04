@@ -70,7 +70,6 @@ class ProgressBuilder extends StatefulWidget {
     this.onSuccess,
     this.onDone,
     this.onStart,
-
     Key? key,
   }) : super(key: key);
 
@@ -125,9 +124,11 @@ class _ProgressBuilderState extends State<ProgressBuilder> {
         rethrow;
       }
     } finally {
-      setState(() {
-        _progress = null;
-      });
+      if (mounted) {
+        setState(() {
+          _progress = null;
+        });
+      }
       widget.onDone?.call();
     }
   }
