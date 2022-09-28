@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'action_controller.dart';
+import 'action_controller_mixin.dart';
 
 class DefaultActionController extends StatefulWidget {
-
   const DefaultActionController({
     required this.child,
     this.broadcast = true,
@@ -18,26 +18,20 @@ class DefaultActionController extends StatefulWidget {
 
   static ActionController? of(BuildContext context) => context
       .findAncestorStateOfType<_DefaultActionControllerState>()
-      ?._controller;
+      ?.controller;
 
   @override
   _DefaultActionControllerState createState() =>
       _DefaultActionControllerState();
 }
 
-class _DefaultActionControllerState extends State<DefaultActionController> {
-  late ActionController _controller;
-
+class _DefaultActionControllerState extends State<DefaultActionController>
+    with ActionControllerMixin {
   @override
   void initState() {
     super.initState();
-    _controller = widget.broadcast ? ActionController.broadcast() : ActionController();
-  }
-
-  @override
-  void dispose() {
-    _controller.close();
-    super.dispose();
+    controller =
+        widget.broadcast ? ActionController.broadcast() : ActionController();
   }
 
   @override
