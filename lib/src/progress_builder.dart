@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:progress_builder/progress_builder.dart';
+
 import 'action_controller.dart';
+import 'default_action_controller.dart';
 
 ///
 /// Builds a widget in the non-progress/loading state
