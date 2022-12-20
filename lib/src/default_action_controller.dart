@@ -7,8 +7,8 @@ class DefaultActionController extends StatefulWidget {
   const DefaultActionController({
     required this.child,
     this.broadcast = true,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// The widget below this widget in the tree.
   final Widget child;
@@ -31,7 +31,8 @@ class _DefaultActionControllerState extends State<DefaultActionController> {
   @override
   void initState() {
     super.initState();
-    _controller = widget.broadcast ? ActionController.broadcast() : ActionController();
+    _controller =
+        widget.broadcast ? ActionController.broadcast() : ActionController();
   }
 
   @override
