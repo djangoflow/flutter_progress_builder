@@ -1,3 +1,7 @@
+## [1.1.4] - 20 Dec 2022
+* Bump Dart SDK minimum version constraint to 2.17.0
+* Add linter rule 'use_super_parameters'
+
 ## [1.1.3] - 4 Aug 2021
 * Properly handle the race condition when the widget is disposed while performing the action
 
