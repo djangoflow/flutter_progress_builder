@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'action_controller.dart';
 import 'progress_builder.dart';
 
 class CircularProgressBuilder extends ProgressBuilder {
@@ -11,44 +10,28 @@ class CircularProgressBuilder extends ProgressBuilder {
       CircularProgressIndicator.adaptive(value: value);
 
   const CircularProgressBuilder({
-    required ProgressChildWidgetBuilder builder,
-    ErrorCallback? onError,
-    ProgressAction? action,
-    VoidCallback? onDone,
-    VoidCallback? onStart,
-    VoidCallback? onSuccess,
-    ActionController? controller,
-    Key? key,
+    required super.builder,
+    super.onError,
+    super.action,
+    super.onDone,
+    super.onStart,
+    super.onSuccess,
+    super.controller,
+    super.key,
   }) : super(
-          action: action,
-          builder: builder,
-          onDone: onDone,
-          onError: onError,
-          onStart: onStart,
-          onSuccess: onSuccess,
           progressBuilder: _progressBuilder,
-          controller: controller,
-          key: key,
         );
 
   const CircularProgressBuilder.adaptive({
-    required ProgressChildWidgetBuilder builder,
-    ErrorCallback? onError,
-    ProgressAction? action,
-    VoidCallback? onDone,
-    VoidCallback? onStart,
-    VoidCallback? onSuccess,
-    ActionController? controller,
-    Key? key,
+    required super.builder,
+    super.onError,
+    super.action,
+    super.onDone,
+    super.onStart,
+    super.onSuccess,
+    super.controller,
+    super.key,
   }) : super(
-          action: action,
-          builder: builder,
-          onDone: onDone,
-          onError: onError,
-          onStart: onStart,
-          onSuccess: onSuccess,
           progressBuilder: _adaptiveProgressBuilder,
-          controller: controller,
-          key: key,
         );
 }

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:progress_builder/progress_builder.dart';
-import 'action_controller.dart';
 
 ///
 /// Builds a widget in the non-progress/loading state
@@ -70,8 +69,8 @@ class ProgressBuilder extends StatefulWidget {
     this.onSuccess,
     this.onDone,
     this.onStart,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _ProgressBuilderState createState() => _ProgressBuilderState();
