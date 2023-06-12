@@ -2,17 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:progress_builder/progress_builder.dart';
-import 'action_controller.dart';
 
 ///
 /// Builds a widget in the non-progress/loading state
 ///
-typedef ProgressChildWidgetBuilder = Widget Function(
-    BuildContext context, void Function()? action, Object? error);
+typedef ProgressChildWidgetBuilder = Widget Function(BuildContext context, void Function()? action, Object? error);
 
 /// Builds a progress indicator with [double progress]
-typedef ProgressIndicatorWidgetBuilder = Widget Function(BuildContext context,
-    [double? progress]);
+typedef ProgressIndicatorWidgetBuilder = Widget Function(BuildContext context, [double? progress]);
 
 /// The call back from action to notify about the progress
 typedef ProgressCallback = void Function(double? progress);
@@ -55,6 +52,9 @@ class ProgressBuilder extends StatefulWidget {
   /// The stream to listen for triggering action externally
   final ActionController? controller;
 
+  /// The animation duration in milliseconds, defaults to 500
+  final int? animationDuration;
+
   /// Creates a ProgressBuilder.
   ///
   /// The [builder]  builds the child, either in initial, done or error state (error != null).
@@ -70,6 +70,7 @@ class ProgressBuilder extends StatefulWidget {
     this.onSuccess,
     this.onDone,
     this.onStart,
+    this.animationDuration,
     Key? key,
   }) : super(key: key);
 
@@ -77,44 +78,49 @@ class ProgressBuilder extends StatefulWidget {
   _ProgressBuilderState createState() => _ProgressBuilderState();
 }
 
-class _ProgressBuilderState extends State<ProgressBuilder> {
-  double? _progress;
+class _ProgressBuilderState extends State<ProgressBuilder> with SingleTickerProviderStateMixin {
   dynamic _error;
-
+  bool _isInProgress = false;
+  AnimationController? _progressAnimationController;
   StreamSubscription<ActionType>? _subscription;
+  late final Duration _animationDuration;
 
   @override
   void initState() {
-    _subscription = (widget.controller ?? DefaultActionController.of(context))
-        ?.stream
-        .listen((event) {
-      if (event == ActionType.start && mounted && _progress == null) {
+    super.initState();
+    _animationDuration = Duration(milliseconds: widget.animationDuration ?? 500);
+    _progressAnimationController = AnimationController(
+      vsync: this,
+      duration: _animationDuration,
+    );
+
+    _subscription = (widget.controller ?? DefaultActionController.of(context))?.stream.listen((event) {
+      if (event == ActionType.start && mounted && !_isInProgress) {
         _action();
       }
     });
-    super.initState();
   }
 
   @override
   void dispose() {
+    _progressAnimationController?.dispose();
     _subscription?.cancel();
     super.dispose();
   }
 
-  void _progressCallback(double? progress) {
-    setState(() {
-      _progress = progress ?? -1;
-    });
-  }
-
   Future<void> _action() async {
-    setState(() {
-      _progress = -1;
-      _error = null;
-    });
+    _isInProgress = true;
+    _progressAnimationController?.value = 0.0;
+    _error = null;
     widget.onStart?.call();
     try {
-      await widget.action?.call(_progressCallback);
+      await widget.action?.call((progress) {
+        _progressAnimationController?.animateTo(
+          progress ?? 0,
+          duration: _animationDuration,
+          curve: Curves.ease,
+        );
+      });
       widget.onSuccess?.call();
     } catch (e) {
       _error = e;
@@ -125,22 +131,21 @@ class _ProgressBuilderState extends State<ProgressBuilder> {
       }
     } finally {
       if (mounted) {
-        setState(() {
-          _progress = null;
-        });
+        _isInProgress = false;
       }
       widget.onDone?.call();
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    if (_progress != null) {
-      final progress = _progress! < 0 ? null : _progress;
-      return widget.progressBuilder.call(context, progress);
-    } else {
-      return widget.builder(
-          context, widget.action != null ? _action : null, _error);
-    }
-  }
+  Widget build(BuildContext context) => AnimatedBuilder(
+        animation: _progressAnimationController!,
+        builder: (context, child) {
+          if (_isInProgress) {
+            return widget.progressBuilder.call(context, _progressAnimationController!.value);
+          } else {
+            return widget.builder(context, widget.action != null ? _action : null, _error);
+          }
+        },
+      );
 }
