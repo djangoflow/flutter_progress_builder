@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mounted_state/mounted_state.dart';
 import 'package:progress_builder/progress_builder.dart';
 import 'action_controller.dart';
 
@@ -77,7 +78,8 @@ class ProgressBuilder extends StatefulWidget {
   _ProgressBuilderState createState() => _ProgressBuilderState();
 }
 
-class _ProgressBuilderState extends State<ProgressBuilder> {
+class _ProgressBuilderState extends State<ProgressBuilder>
+    with MountedStateOverride {
   double? _progress;
   dynamic _error;
 
